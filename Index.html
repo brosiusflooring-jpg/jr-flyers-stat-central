@@ -1,1 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#080808">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Jr Flyers Stat Central</title>
 
+<style>
+:root {
+  --orange: #f36b21;
+  --orange-dark: #c94f0d;
+  --black: #080808;
+  --card: #151515;
+  --card2: #1d1d1d;
+  --border: #2b2b2b;
+  --white: #ffffff;
+  --gray: #9b9b9b;
+  --light-gray: #d4d4d4;
+  --green: #46c878;
+  --red: #e85b5b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  background: var(--black);
+  color: var(--white);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  min-height: 100%;
+}
+
+body {
+  padding-bottom: 82px;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.app {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.header {
+  padding: 24px 20px 20px;
+  background:
+    linear-gradient(135deg, #171717 0%, #0b0b0b 70%);
+  border-bottom: 2px solid var(--orange);
+  position: relative;
+  overflow: hidden;
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  right: -45px;
+  top: -60px;
+  width: 150px;
+  height: 150px;
+  border: 22px solid rgba(243,107,33,.12);
+  border-radius: 50%;
+}
+
+.team-name {
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.team-subtitle {
+  margin-top: 5px;
+  color: var(--orange);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* PAGES */
+
+.page {
+  display: none;
+  padding-bottom: 25px;
+}
+
+.page.active {
+  display: block;
+}
+
+.page-title {
+  padding: 22px 18px 8px;
+  font-size: 27px;
+  font-weight: 900;
+}
+
+.page-subtitle {
+  padding: 0 18px 15px;
+  color: var(--gray);
+  font-size: 13px;
+}
+
+/* DASHBOARD */
+
+.record-card {
+  margin: 18px 16px;
+  padding: 23px;
+  background: linear-gradient(145deg, #202020, #111111);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,.3);
+}
+
+.record-label {
+  color: var(--gray);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.record {
+  margin-top: 6px;
+  font-size: 44px;
+  font-weight: 950;
+  letter-spacing: 2px;
+}
+
+.next-game {
+  margin: 0 16px;
+  padding: 20px;
+  background: var(--card);
+  border-left: 4px solid var(--orange);
+  border-radius: 15px;
+}
+
+.section-label {
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.opponent {
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.game-info {
+  margin-top: 7px;
+  color: var(--gray);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.primary-button {
+  width: 100%;
+  margin-top: 16px;
+  padding: 15px;
+  background: var(--orange);
+  border: 0;
+  border-radius: 12px;
+  color: white;
+  font-weight: 950;
+  font-size: 15px;
+  box-shadow: 0 5px 15px rgba(243,107,33,.2);
+}
+
+.primary-button:active {
+  transform: scale(.98);
+}
+
+.section {
+  margin: 22px 16px 0;
+}
+
+.leader-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+}
+
+.leader-card {
+  padding: 14px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leader-name {
+  margin-top: 3px;
+  font-weight: 800;
+}
+
+.leader-category {
+  color: var(--gray);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.leader-value {
+  color: var(--orange);
+  font-size: 21px;
+  font-weight: 950;
+}
+
+.goalie-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 9px;
+}
+
+.goalie-card {
+  padding: 15px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.goalie-name {
+  font-size: 16px;
+  font-weight: 850;
+}
+
+.goalie-stats {
+  margin-top: 7px;
+  color: var(--light-gray);
+  font-size: 12px;
+}
+
+/* GENERIC CARDS */
+
+.card {
+  margin: 10px 16px;
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
+
+.empty {
+  color: var(--gray);
+  text-align: center;
+  padding: 30px 15px;
+}
+
+/* ROSTER */
+
+.roster-player {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.jersey {
+  width: 43px;
+  height: 43px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #292929, #101010);
+  border: 1px solid #363636;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
+  font-weight: 950;
+}
+
+.player-info {
+  flex: 1;
+}
+
+.player-name {
+  font-weight: 850;
+}
+
+.player-meta {
+  margin-top: 4px;
+  color: var(--gray);
+  font-size: 12px;
+}
+
+.status {
+  padding: 5px 8px;
+  border-radius: 8px;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.status.active {
+  background: rgba(70,200,120,.13);
+  color: var(--green);
+}
+
+.status.inactive {
+  background: rgba(232,91,91,.12);
+  color: var(--red);
+}
+
+/* SCHEDULE */
+
+.game-row {
+  position: relative;
+  padding: 16px;
+  margin: 10px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+}
+
+.game-date {
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.game-opponent {
+  margin-top: 5px;
+  font-size: 19px;
+  font-weight: 850;
+}
+
+.game-type {
+  margin-top: 4px;
+  color: var(--gray);
+  font-size: 12px;
+}
+
+.game-result {
+  position: absolute;
+  right: 15px;
+  top: 19px;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.win {
+  color: var(--green);
+}
+
+.loss {
+  color: var(--red);
+}
+
+.tie {
+  color: #ddd;
+}
+
+/* GAME DAY */
+
+.game-score-card {
+  margin: 16px;
+  padding: 20px;
+  background: linear-gradient(145deg, #202020, #101010);
+  border-radius: 18px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+
+.game-teams {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-score {
+  width: 42%;
+}
+
+.team-score-name {
+  font-size: 12px;
+  color: var(--gray);
+  font-weight: 800;
+}
+
+.big-score {
+  margin-top: 4px;
+  font-size: 46px;
+  font-weight: 950;
+}
+
+.period-display {
+  color: var(--orange);
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.game-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  padding: 0 16px;
+}
+
+.game-tab {
+  padding: 10px 3px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card);
+  color: var(--gray);
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.game-tab.active {
+  color: white;
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 15px 16px;
+}
+
+.action-button {
+  min-height: 90px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  color: white;
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.action-button span {
+  display: block;
+  color: var(--orange);
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+
+/* ANALYTICS */
+
+.stat-table {
+  width: calc(100% - 32px);
+  margin: 10px 16px;
+  border-collapse: collapse;
+  background: var(--card);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.stat-table th,
+.stat-table td {
+  padding: 11px 7px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  font-size: 11px;
+}
+
+.stat-table th {
+  color: var(--orange);
+  font-size: 9px;
+  letter-spacing: .5px;
+}
+
+.stat-table td:first-child,
+.stat-table th:first-child {
+  text-align: left;
+  padding-left: 12px;
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 76px;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: rgba(14,14,14,.97);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+
+.nav-button {
+  width: 20%;
+  height: 62px;
+  background: transparent;
+  border: 0;
+  color: #777;
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.nav-icon {
+  display: block;
+  font-size: 21px;
+  margin-bottom: 4px;
+}
+
+.nav-button.active {
+  color: var(--orange);
+}
+
+/* RESPONSIVE */
+
+@media (min-width: 500px) {
+  .leader-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .goalie-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+  <div class="team-name">PHILADELPHIA JR FLYERS</div>
+  <div class="team-subtitle">2013 • 13O &nbsp; | &nbsp; 2026–2027</div>
+</header>
+
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+  <div class="record-card">
+    <div class="record-label">Overall Record</div>
+    <div class="record" id="dashboardRecord">0–0–0</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Next Game</div>
+
+    <div class="next-game">
+      <div class="opponent" id="nextOpponent">Schedule TBD</div>
+      <div class="game-info" id="nextGameInfo">
+        Add your schedule to see the next matchup.
+      </div>
+
+      <button class="primary-button" onclick="openPage('gameday')">
+        ▶ START GAME
+      </button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Top 3 — Points</div>
+
+    <div class="leader-grid" id="pointsLeaders">
+      <div class="leader-card">
+        <div>
+          <div class="leader-category">Points</div>
+          <div class="leader-name">No data yet</div>
+        </div>
+        <div class="leader-value">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Top 3 — Goals</div>
+
+    <div class="leader-grid" id="goalLeaders">
+      <div class="leader-card">
+        <div>
+          <div class="leader-category">Goals</div>
+          <div class="leader-name">No data yet</div>
+        </div>
+        <div class="leader-value">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Top 3 — Assists</div>
+
+    <div class="leader-grid" id="assistLeaders">
+      <div class="leader-card">
+        <div>
+          <div class="leader-category">Assists</div>
+          <div class="leader-name">No data yet</div>
+        </div>
+        <div class="leader-value">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Goaltending</div>
+
+    <div class="goalie-grid" id="goalieLeaders">
+      <div class="goalie-card">
+        <div class="goalie-name">No goalies added</div>
+        <div class="goalie-stats">GP — &nbsp; | &nbsp; SV% — &nbsp; | &nbsp; GAA —</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- SCHEDULE -->
+
+<section id="schedule" class="page">
+
+  <div class="page-title">Schedule</div>
+  <div class="page-subtitle">2026–2027 Season</div>
+
+  <div id="scheduleList">
+    <div class="card empty">
+      No games entered yet.<br><br>
+      Your schedule will appear here once we add the schedule manager.
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ROSTER -->
+
+<section id="roster" class="page">
+
+  <div class="page-title">Roster</div>
+  <div class="page-subtitle">Philadelphia Jr Flyers • 2013 • 13O</div>
+
+  <div id="rosterList">
+    <div class="card empty">
+      No players entered yet.<br><br>
+      We'll build the roster manager next.
+    </div>
+  </div>
+
+</section>
+
+
+<!-- GAME DAY -->
+
+<section id="gameday" class="page">
+
+  <div class="page-title">Game Day</div>
+  <div class="page-subtitle">Live game scoring & statistics</div>
+
+  <div class="game-score-card">
+
+    <div class="game-teams">
+
+      <div class="team-score">
+        <div class="team-score-name">JR FLYERS</div>
+        <div class="big-score" id="ourScore">0</div>
+      </div>
+
+      <div>
+        <div class="period-display" id="gamePeriod">1ST</div>
+        <div style="color:#777;font-size:10px;margin-top:4px;">PERIOD</div>
+      </div>
+
+      <div class="team-score">
+        <div class="team-score-name">OPPONENT</div>
+        <div class="big-score" id="oppScore">0</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="game-tabs">
+    <button class="game-tab active">GAME</button>
+    <button class="game-tab">ROSTER</button>
+    <button class="game-tab">SHOTS</button>
+    <button class="game-tab">MORE</button>
+  </div>
+
+  <div class="action-grid">
+
+    <button class="action-button" onclick="demoGoalFor()">
+      <span>🥅</span>
+      GOAL FOR
+    </button>
+
+    <button class="action-button" onclick="demoGoalAgainst()">
+      <span>🚨</span>
+      GOAL AGAINST
+    </button>
+
+    <button class="action-button">
+      <span>🏒</span>
+      OUR SHOT
+    </button>
+
+    <button class="action-button">
+      <span>🧤</span>
+      GOALIE SHOT
+    </button>
+
+    <button class="action-button">
+      <span>⚠️</span>
+      PENALTY
+    </button>
+
+    <button class="action-button">
+      <span>📋</span>
+      GAME ROSTER
+    </button>
+
+  </div>
+
+  <div class="card">
+    <div class="section-label">Game Status</div>
+    <div style="color:#aaa;font-size:13px;">
+      No game currently loaded.
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ANALYTICS -->
+
+<section id="analytics" class="page">
+
+  <div class="page-title">Analytics</div>
+  <div class="page-subtitle">Player & team performance</div>
+
+  <div class="card">
+    <div class="section-label">Player Performance</div>
+    <div style="color:#aaa;font-size:13px;line-height:1.5;">
+      Detailed player analytics will be calculated automatically from completed games.
+    </div>
+  </div>
+
+  <table class="stat-table">
+    <thead>
+      <tr>
+        <th>PLAYER</th>
+        <th>GP</th>
+        <th>G</th>
+        <th>A</th>
+        <th>PTS</th>
+        <th>+/-</th>
+      </tr>
+    </thead>
+
+    <tbody id="analyticsTable">
+      <tr>
+        <td colspan="6" style="color:#777;padding:25px;">
+          No statistics yet
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</section>
+
+</div>
+
+
+<!-- NAVIGATION -->
+
+<nav class="bottom-nav">
+
+  <button class="nav-button active" onclick="openPage('home', this)">
+    <span class="nav-icon">🏠</span>
+    HOME
+  </button>
+
+  <button class="nav-button" onclick="openPage('schedule', this)">
+    <span class="nav-icon">📅</span>
+    SCHEDULE
+  </button>
+
+  <button class="nav-button" onclick="openPage('roster', this)">
+    <span class="nav-icon">👥</span>
+    ROSTER
+  </button>
+
+  <button class="nav-button" onclick="openPage('gameday', this)">
+    <span class="nav-icon">🏒</span>
+    GAME DAY
+  </button>
+
+  <button class="nav-button" onclick="openPage('analytics', this)">
+    <span class="nav-icon">📊</span>
+    ANALYTICS
+  </button>
+
+</nav>
+
+
+<script>
+
+/* =========================================================
+   JR FLYERS STAT CENTRAL
+   LOCAL DATA FOUNDATION
+   ========================================================= */
+
+const APP_KEY = "jrFlyersStatCentral_v1";
+
+let appData = {
+  team: {
+    name: "Philadelphia Jr Flyers",
+    division: "2013 • 13O",
+    season: "2026–2027"
+  },
+
+  roster: [],
+
+  schedule: [],
+
+  games: [],
+
+  settings: {
+    version: 1
+  }
+};
+
+
+/* LOAD LOCAL DATA */
+
+function loadData() {
+
+  try {
+
+    const saved = localStorage.getItem(APP_KEY);
+
+    if (saved) {
+      appData = JSON.parse(saved);
+    }
+
+  } catch (error) {
+
+    console.log("Unable to load local data.", error);
+
+  }
+
+}
+
+
+/* SAVE LOCAL DATA */
+
+function saveData() {
+
+  try {
+
+    localStorage.setItem(
+      APP_KEY,
+      JSON.stringify(appData)
+    );
+
+  } catch (error) {
+
+    console.log("Unable to save local data.", error);
+
+  }
+
+}
+
+
+/* PAGE NAVIGATION */
+
+function openPage(pageId, navButton) {
+
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  const page = document.getElementById(pageId);
+
+  if (page) {
+    page.classList.add("active");
+  }
+
+  document.querySelectorAll(".nav-button").forEach(button => {
+    button.classList.remove("active");
+  });
+
+  if (navButton) {
+    navButton.classList.add("active");
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
+
+}
+
+
+/* DEMO BUTTONS
+   These are temporary.
+   We will replace them with the real Game Day
+   event system later.
+*/
+
+function demoGoalFor() {
+
+  const scoreElement = document.getElementById("ourScore");
+
+  let score = Number(scoreElement.textContent);
+
+  score++;
+
+  scoreElement.textContent = score;
+
+}
+
+
+function demoGoalAgainst() {
+
+  const scoreElement = document.getElementById("oppScore");
+
+  let score = Number(scoreElement.textContent);
+
+  score++;
+
+  scoreElement.textContent = score;
+
+}
+
+
+/* INITIALIZE */
+
+loadData();
+saveData();
+
+</script>
+
+</body>
+</html>
